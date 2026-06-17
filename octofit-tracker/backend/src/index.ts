@@ -21,22 +21,39 @@ app.use(express.json())
 
 function registerCollectionRoute<T>(route: string, label: string, model: Model<T>) {
   app.get(route, async (_request, response) => {
-    const items = await model.find().lean().exec()
+    try {
+      const items = await model.find().lean().exec()
 
-    response.json({
-      baseUrl,
-      count: items.length,
-      items,
-      resource: label,
-    })
+      response.json({
+        baseUrl,
+        count: items.length,
+        items,
+        resource: label,
+        databaseReady: true,
+      })
+    } catch (error) {
+      response.json({
+        baseUrl,
+        count: 0,
+        items: [],
+        resource: label,
+        databaseReady: false,
+        error: error instanceof Error ? error.message : 'Database query failed',
+      })
+    }
   })
 }
 
-registerCollectionRoute('/api/users/', 'users', UserModel)
-registerCollectionRoute('/api/teams/', 'teams', TeamModel)
-registerCollectionRoute('/api/activities/', 'activities', ActivityModel)
-registerCollectionRoute('/api/leaderboard/', 'leaderboard', LeaderboardModel)
-registerCollectionRoute('/api/workouts/', 'workouts', WorkoutModel)
+function registerNormalizedCollectionRoute<T>(route: string, label: string, model: Model<T>) {
+  registerCollectionRoute(route, label, model)
+  registerCollectionRoute(route.slice(0, -1), label, model)
+}
+
+registerNormalizedCollectionRoute('/api/users/', 'users', UserModel)
+registerNormalizedCollectionRoute('/api/teams/', 'teams', TeamModel)
+registerNormalizedCollectionRoute('/api/activities/', 'activities', ActivityModel)
+registerNormalizedCollectionRoute('/api/leaderboard/', 'leaderboard', LeaderboardModel)
+registerNormalizedCollectionRoute('/api/workouts/', 'workouts', WorkoutModel)
 
 app.get('/api/health', (_request, response) => {
   response.json({
@@ -48,7 +65,7 @@ app.get('/api/health', (_request, response) => {
 })
 
 async function start() {
-  await connectDatabase().catch((error) => {
+  void connectDatabase().catch((error) => {
     console.warn('MongoDB connection not ready at startup:', error instanceof Error ? error.message : error)
   })
 
