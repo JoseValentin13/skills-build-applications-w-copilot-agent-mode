@@ -6,13 +6,17 @@ const fields = [
   { key: 'points', label: 'Points' },
 ]
 
+const endpointPath = import.meta.env.VITE_CODESPACE_NAME
+  ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/users/`
+  : '/api/users/'
+
 export default function Users() {
   return (
     <ResourcePage
       accent="#ff8f70"
       description="Review student profiles and overall point progress."
       fields={fields}
-      endpointPath="/api/users/"
+      endpointPath={endpointPath}
       resource="users"
       title="Users"
     />
