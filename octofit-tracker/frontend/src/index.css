@@ -1,0 +1,39 @@
+:root {
+  font-family: 'Space Grotesk', 'Segoe UI', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #f3f7ff;
+  background:
+    radial-gradient(circle at top left, rgba(91, 140, 255, 0.24), transparent 30%),
+    radial-gradient(circle at top right, rgba(255, 132, 94, 0.18), transparent 28%),
+    linear-gradient(160deg, #06101d 0%, #091627 55%, #040912 100%);
+  color-scheme: dark;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:hover {
+  color: inherit;
+}
+
+code {
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+}
