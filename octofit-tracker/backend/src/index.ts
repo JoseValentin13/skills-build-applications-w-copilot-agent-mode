@@ -1,5 +1,5 @@
 import express from 'express'
-import mongoose, { type Model } from 'mongoose'
+import { type Model } from 'mongoose'
 import {
   ActivityModel,
   LeaderboardModel,
@@ -7,13 +7,13 @@ import {
   UserModel,
   WorkoutModel,
 } from './models.js'
+import { connectDatabase, mongoUri, mongoose } from './config/database.js'
 
 const port = Number(process.env.PORT ?? 8000)
 const codespaceName = process.env.CODESPACE_NAME
 const baseUrl = codespaceName
   ? `https://${codespaceName}-8000.app.github.dev`
   : `http://localhost:${port}`
-const mongoUri = process.env.MONGODB_URI ?? 'mongodb://127.0.0.1:27017/octofit_db'
 
 const app = express()
 
@@ -48,7 +48,7 @@ app.get('/api/health', (_request, response) => {
 })
 
 async function start() {
-  await mongoose.connect(mongoUri).catch((error) => {
+  await connectDatabase().catch((error) => {
     console.warn('MongoDB connection not ready at startup:', error instanceof Error ? error.message : error)
   })
 

@@ -1,4 +1,3 @@
-import mongoose from 'mongoose'
 import {
   ActivityModel,
   LeaderboardModel,
@@ -6,8 +5,8 @@ import {
   UserModel,
   WorkoutModel,
 } from '../models.js'
+import { connectDatabase, mongoUri, mongoose } from '../config/database.js'
 
-const mongoUri = process.env.MONGODB_URI ?? 'mongodb://127.0.0.1:27017/octofit_db'
 const port = Number(process.env.PORT ?? 8000)
 const codespaceName = process.env.CODESPACE_NAME
 const apiBaseUrl = codespaceName
@@ -63,7 +62,7 @@ async function verifyApiResponses() {
 async function seedDatabase() {
   console.log('Seed the octofit_db database with test data')
 
-  await mongoose.connect(mongoUri)
+  await connectDatabase()
 
   await Promise.all([
     UserModel.deleteMany({}),
