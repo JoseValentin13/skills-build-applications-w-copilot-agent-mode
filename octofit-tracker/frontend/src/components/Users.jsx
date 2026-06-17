@@ -6,15 +6,13 @@ const fields = [
   { key: 'points', label: 'Points' },
 ]
 
-const endpointPath = '/api/users/'
-
 export default function Users() {
   return (
     <ResourcePage
       accent="#ff8f70"
       description="Review student profiles and overall point progress."
       fields={fields}
-      endpointPath={endpointPath}
+      endpointPath="/api/users/"
       resource="users"
       title="Users"
     />
