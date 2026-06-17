@@ -5,8 +5,8 @@ export const apiBaseUrl = codespaceName
   ? `https://${codespaceName}-8000.app.github.dev`
   : 'http://localhost:8000'
 
-export function getApiUrl(resourcePath) {
-  return `${apiBaseUrl}/api/${resourcePath}/`
+export function getApiUrl(resourcePath, endpointPath) {
+  return endpointPath ?? `${apiBaseUrl}/api/${resourcePath}/`
 }
 
 export function normalizeCollectionPayload(payload) {
@@ -29,8 +29,8 @@ export function normalizeCollectionPayload(payload) {
   return []
 }
 
-export async function fetchCollection(resourcePath, signal) {
-  const response = await fetch(getApiUrl(resourcePath), { signal })
+export async function fetchCollection(resourcePath, signal, endpointPath) {
+  const response = await fetch(getApiUrl(resourcePath, endpointPath), { signal })
 
   if (!response.ok) {
     throw new Error(`Request failed with status ${response.status}`)

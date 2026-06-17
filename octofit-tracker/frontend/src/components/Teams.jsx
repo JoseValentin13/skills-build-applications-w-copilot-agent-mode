@@ -6,12 +6,15 @@ const fields = [
   { key: 'points', label: 'Points' },
 ]
 
+const endpointPath = '/api/teams/'
+
 export default function Teams() {
   return (
     <ResourcePage
       accent="#8aa7ff"
       description="Track teams, members, and collective point totals."
       fields={fields}
+      endpointPath={endpointPath}
       resource="teams"
       title="Teams"
     />
